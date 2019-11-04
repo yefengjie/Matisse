@@ -32,6 +32,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -59,6 +60,8 @@ import com.zhihu.matisse.internal.utils.PathUtils;
 import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
 
 import com.zhihu.matisse.internal.utils.SingleMediaScanner;
+
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -226,6 +229,9 @@ public class MatisseActivity extends AppCompatActivity implements
             // Just pass the data back to previous calling Activity.
             Uri contentUri = mMediaStoreCompat.getCurrentPhotoUri();
             String path = mMediaStoreCompat.getCurrentPhotoPath();
+            if (!TextUtils.isEmpty(path)) {
+                sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(new File(path))));
+            }
             ArrayList<Uri> selected = new ArrayList<>();
             selected.add(contentUri);
             ArrayList<String> selectedPath = new ArrayList<>();
